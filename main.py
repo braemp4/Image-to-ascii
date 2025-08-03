@@ -5,7 +5,22 @@ import curses
 donut = Image.open("test-donut.png")
 pixels = array(donut)
 
-print(pixels[0][2][0])
+print(donut.size)
+
+def get_largest_dim(image):
+    return max(image.size)
+
+scaling_dimension = get_largest_dim(donut)
+def get_scaling_factor(scaling_dimension) -> int:
+    if scaling_dimension < 300:
+        return 6
+    elif scaling_dimension >= 300 and scaling_dimension < 400:
+        return 10
+    elif scaling_dimension >= 400:
+        return 15
+    else:
+        return 30
+scale = get_scaling_factor(scaling_dimension)
 
 def get_luminance(p):
     return p[0] * 0.299 + p[1]* 0.587 + p[2] * 0.144
@@ -43,9 +58,8 @@ def main():
     for i in range(len(shades)):
         for y in range(len(shades[i])):
             color = shades[i][y]
-            screen.addstr(i//6, y//6, pixel_to_char[color])
+            screen.addstr( i//scale, y//scale, pixel_to_char[color])
 
             screen.refresh()
     screen.getch()
 main()
-
